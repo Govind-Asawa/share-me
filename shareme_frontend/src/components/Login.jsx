@@ -13,7 +13,7 @@ export default function Login() {
 
   const responseGoogle = (response) => {
     const details = jwtDecode(response.credential); //we receive encoded response
-    localStorage.setItem('user', details);
+    localStorage.setItem('user', JSON.stringify(details));
 
     const { name, sub, picture } = details;
     const doc = {
