@@ -4,6 +4,7 @@ import { HiMenu } from 'react-icons/hi';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
 import { Sidebar, UserProfile } from '../components';
+import Pins from './Pins';
 import { client } from '../SanityClient';
 import { getUserQuery } from '../utils/SanityQueries';
 import logo from '../assets/logo.png';
@@ -65,7 +66,7 @@ export default function Home() {
       <div className='pb-2 flex-1 h-screen overflow-y-scroll' ref={scrollRef}>
         <Routes>
           <Route path='/user-profile/:userId' element={<UserProfile />} />
-          {/* Route for pins */}
+          <Route path='/*' element={<Pins user={user && user}/>}/>
         </Routes>
       </div>
     </div>
