@@ -24,15 +24,11 @@ export default function Feed() {
       client.fetch(feedQuery).then((data) => {
         setPins(data);
         setLoading(false);
-      })
+      });
     }
   }, [categoryId]);
 
   if (loading) return <Spinner message='Hold tight..!' />;
-  
-  return (
-    <div>
-      {pins && <MasonryLayout pins={pins}/>}
-    </div>
-  );
+
+  return <div>{pins && <MasonryLayout pins={pins} />}</div>;
 }

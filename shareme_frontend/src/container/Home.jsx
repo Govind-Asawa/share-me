@@ -7,6 +7,7 @@ import { Sidebar, UserProfile } from '../components';
 import Pins from './Pins';
 import { client } from '../SanityClient';
 import { getUserQuery } from '../utils/SanityQueries';
+import { fetchUser } from '../utils/fetchUser';
 import logo from '../assets/logo.png';
 
 export default function Home() {
@@ -14,10 +15,7 @@ export default function Home() {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const scrollRef = useRef(null);
 
-  const userInfo =
-    localStorage.getItem('user') !== undefined
-      ? JSON.parse(localStorage.getItem('user'))
-      : localStorage.clear();
+  const userInfo = fetchUser();
 
   useEffect(() => {
     client.fetch(getUserQuery(userInfo.sub)).then((data) => setUser(data[0]));
