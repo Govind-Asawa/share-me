@@ -15,9 +15,9 @@ export default function Pin({ pin }) {
   const { postedBy, image, _id, src, save } = pin;
   const userInfo = fetchUser();
 
-  const alreadySaved = !!(save?.filter(
+  const alreadySaved = !!save?.filter(
     (saveItem) => saveItem.postedBy._id == userInfo.sub
-  )?.length);
+  )?.length;
 
   const savePin = (pinId) => {
     if (alreadySaved) return;
@@ -59,7 +59,9 @@ export default function Pin({ pin }) {
             className='absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 py-2 z-50'
             style={{ height: '100%' }}
           >
+            {/* DOWNLOAD & SAVE */}
             <div className='flex items-center justify-between'>
+              {/* DOWNLOAD btn*/}
               <div className='flex gap-2'>
                 <a
                   href={`${image?.asset?.url}?dl=`}
@@ -72,6 +74,7 @@ export default function Pin({ pin }) {
                   <MdDownloadForOffline />
                 </a>
               </div>
+              {/* SAVE btn */}
               {alreadySaved ? (
                 <button
                   type='button'
@@ -90,6 +93,21 @@ export default function Pin({ pin }) {
                 >
                   Save
                 </button>
+              )}
+            </div>
+
+            {/* LINK */}
+            <div className='flex justify-between items-center gap-2 w-full'>
+              {src && (
+                <a
+                  href={src}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='bg-white flex items-center gap-2 text-black font-bold p-2 px-4 rounded-full optacity-70 hover:optacity-100 hover:shadow-md'
+                >
+                  <BsFillArrowUpRightCircleFill />
+                  {src.length > 20 ? `${src.slice(8,18)}..` : src.slice(8)}
+                </a>
               )}
             </div>
           </div>
