@@ -12,7 +12,7 @@ export default function Pin({ pin }) {
   const [postHovered, setPostHovered] = useState(false);
   const navigate = useNavigate();
 
-  const { postedBy, image, _id, src, save } = pin;
+  const { postedBy, image, _id, title, src, save } = pin;
   const userInfo = fetchUser();
 
   const alreadySaved = !!save?.filter(
@@ -130,6 +130,20 @@ export default function Pin({ pin }) {
             </div>
           </div>
         )}
+      </div>
+      <div className='flex flex-col justify-center items-center mt-2'>
+        <span className='h1 text-gray-400 text-center font-semibold'>{title}</span>
+        <Link
+          to={`/user-profile/${postedBy?._id}`}
+          className='flex gap-2 mt-2 items-center'
+        >
+          <img
+            src={postedBy?.image}
+            alt='user-profile'
+            className='w-8 h-8 rounded-full object-cover'
+          />
+          <p className='text-sm font-thin capitalize'>{postedBy?.userName}</p>
+        </Link>
       </div>
     </div>
   );
