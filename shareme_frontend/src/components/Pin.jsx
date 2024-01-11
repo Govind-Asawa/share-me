@@ -41,6 +41,10 @@ export default function Pin({ pin }) {
       });
   };
 
+  const deletePin = (pinId) => {
+    client.delete(pinId).then(() => window.location.reload());
+  };
+
   return (
     <div className='m-2'>
       <div
@@ -78,14 +82,14 @@ export default function Pin({ pin }) {
               {alreadySaved ? (
                 <button
                   type='button'
-                  className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
+                  className='bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
                 >
                   {save && save.length} Saved
                 </button>
               ) : (
                 <button
                   type='button'
-                  className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
+                  className='bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
                   onClick={(e) => {
                     e.stopPropagation();
                     savePin(_id);
@@ -104,10 +108,24 @@ export default function Pin({ pin }) {
                   target='_blank'
                   rel='noreferrer'
                   className='bg-white flex items-center gap-2 text-black font-bold p-2 px-4 rounded-full optacity-70 hover:optacity-100 hover:shadow-md'
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <BsFillArrowUpRightCircleFill />
-                  {src.length > 20 ? `${src.slice(8,18)}..` : src.slice(8)}
+                  {src.length > 20 ? `${src.slice(8, 18)}..` : src.slice(8)}
                 </a>
+              )}
+              {/* Conditional DELETE button if current user posted this pin*/}
+              {postedBy?._id === userInfo.sub && (
+                <button
+                  type='button'
+                  className='bg-white p-2 opacity-70 hover:opacity-100 font-bold text-dark text-base rounded-3xl hover:shadow-md'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deletePin(_id);
+                  }}
+                >
+                  <AiTwotoneDelete />
+                </button>
               )}
             </div>
           </div>
