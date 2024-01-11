@@ -51,7 +51,7 @@ export default function Pin({ pin }) {
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
         onClick={() => navigate(`/pin-detail/${_id}`)}
-        className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out'
+        className='relative cursor-pointer w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out'
       >
         <img
           src={urlFor(image).width(250).url()}
@@ -60,7 +60,7 @@ export default function Pin({ pin }) {
         />
         {postHovered && (
           <div
-            className='absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 py-2 z-50'
+            className='absolute top-0 bg-blackOverlay w-full h-full flex flex-col justify-between p-1 pr-2 py-2 z-50'
             style={{ height: '100%' }}
           >
             {/* DOWNLOAD & SAVE */}
@@ -82,14 +82,14 @@ export default function Pin({ pin }) {
               {alreadySaved ? (
                 <button
                   type='button'
-                  className='bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
+                  className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
                 >
                   {save && save.length} Saved
                 </button>
               ) : (
                 <button
                   type='button'
-                  className='bg-green-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
+                  className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
                   onClick={(e) => {
                     e.stopPropagation();
                     savePin(_id);
