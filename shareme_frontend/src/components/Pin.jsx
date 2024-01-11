@@ -15,9 +15,31 @@ export default function Pin({ pin }) {
   const { postedBy, image, _id, src, save } = pin;
   const userInfo = fetchUser();
 
-  const alreadySaved = !!save?.filter(
+  const alreadySaved = !!(save?.filter(
     (saveItem) => saveItem.postedBy._id == userInfo.sub
-  )?.length;
+  )?.length);
+
+  const savePin = (pinId) => {
+    if (alreadySaved) return;
+
+    client
+      .patch(pinId)
+      .setIfMissing({ save: [] })
+      .insert('after', 'save[-1]', [
+        {
+          _key: uuidv4(), //unique key
+          userId: userInfo.sub,
+          postedBy: {
+            _type: 'postedBy',
+            _ref: userInfo.sub,
+          },
+        },
+      ])
+      .commit()
+      .then(() => {
+        window.location.reload();
+      });
+  };
 
   return (
     <div className='m-2'>
@@ -63,7 +85,7 @@ export default function Pin({ pin }) {
                   className='bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md'
                   onClick={(e) => {
                     e.stopPropagation();
-                    // save pin
+                    savePin(_id);
                   }}
                 >
                   Save
