@@ -8,7 +8,7 @@ export default function Spinner({ message }) {
         visible={true}
         height='80'
         width='80'
-        color='#00BFFF'
+        color='#f87171'
         ariaLabel='triangle-loading'
         wrapperStyle={{}}
         wrapperClass='m-5'
