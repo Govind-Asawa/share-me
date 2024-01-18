@@ -61,10 +61,8 @@ export default function CreatePin({ user }) {
   };
 
   const savePin = () => {
-    console.log(fieldValues);
     if(Object.values(fieldValues).filter((field) => !field).length > 0 )
     {
-      console.log('empty');
       setHasEmptyFields(true);
       setTimeout(() => setHasEmptyFields(false), 2000);
     }
