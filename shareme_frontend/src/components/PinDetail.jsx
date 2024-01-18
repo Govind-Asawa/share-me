@@ -37,6 +37,11 @@ export default function PinDetail({ user }) {
     fetchPinDetails();
   }, [pinId]);
 
+  const handleAddComment = (e) => {
+    console.log('handled');
+    setComment('');
+  }
+
   if (loading) return <Spinner message='Hold tight..!' />;
 
   return (
@@ -54,9 +59,12 @@ export default function PinDetail({ user }) {
         </div>
         <div className='flex flex-1 flex-col gap-5 p-5'>
           <div>
-            <h1 className='text-2xl font-bold break-words'>{pinDetail?.title}</h1>
+            <h1 className='text-2xl font-bold break-words'>
+              {pinDetail?.title}
+            </h1>
             <p className='text-sm font-light mt-2'>{pinDetail?.about}</p>
           </div>
+          {/* DOWNLOAD & TAG links */}
           <div className='w-full flex flex xl:min-w-620 justify-between items-center'>
             <a
               href={`${pinDetail?.image?.asset.url}?dl=`}
@@ -81,6 +89,7 @@ export default function PinDetail({ user }) {
               </a>
             </div>
           </div>
+          {/* Posted By USER */}
           {pinDetail?.postedBy && (
             <Link
               to={`user-profile/${pinDetail?.postedBy._id}`}
@@ -94,6 +103,7 @@ export default function PinDetail({ user }) {
               <p>{pinDetail?.postedBy.userName}</p>
             </Link>
           )}
+          {/* Link Associated with post */}
           {pinDetail?.src && (
             <a
               href={pinDetail.src}
@@ -103,9 +113,55 @@ export default function PinDetail({ user }) {
               onClick={(e) => e.stopPropagation()}
             >
               <FiLink />
-              {pinDetail.src.length > 30 ? `${pinDetail.src.slice(8, 18)}..` : pinDetail.src.slice(8)}
+              {pinDetail.src.startsWith('http') && pinDetail.src.length > 30
+                ? `${pinDetail.src.slice(8, 18)}..`
+                : pinDetail.src.slice(8)}
             </a>
           )}
+          <h2 className='text-xl font-bold'>Comments</h2>
+          <div className='max-h-370 overflow-y-auto'>
+            {pinDetail.comments?.map((comment, i) => {
+              return (
+                <div
+                  className='flex items-center gap-2 bg-white rounded-lg'
+                  key={i}
+                >
+                  <img
+                    src={comment.postedBy?.image}
+                    alt='commentor-profile'
+                    className='w-10 h-10 rounded-full'
+                  />
+                  <div className='flex flex-col justify-between'>
+                    <p className='font-semibold capitalize'>
+                      {comment.postedBy.userName}
+                    </p>
+                    <p className='font-medium'>{comment.comment}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className='flex flex-wrap gap-2 justify-between items-center rounded-lg bg-white'>
+            <Link to={`user-profile/${user?._id}`}>
+              <img
+                src={user?.image}
+                alt='user-profile'
+                className='w-10 h-10 rounded-full'
+              />
+            </Link>
+            <input
+              type='text'
+              placeholder='Add a comment'
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className='flex-1 rounded-xl outline-none border-2 p-2 border-gray-200 focus:border-gray-400'
+            />
+            <button
+              type='button'
+              className='bg-red-600 p-2 px-4 rounded-full text-white text-xl font-semibold opacity-75 hover:opacity-100 hover:shadow-md outline-none'
+              onClick={handleAddComment}
+            >Done</button>
+          </div>
         </div>
       </div>
     )
