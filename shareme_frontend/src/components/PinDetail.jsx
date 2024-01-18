@@ -14,6 +14,7 @@ export default function PinDetail({ user }) {
   const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null);
   const [comment, setComment] = useState('');
+  const [addingComment, setAddingComment] = useState(false);
   const [loading, setloading] = useState(false);
   const { pinId } = useParams(); //PinId is obtained as a Dynamic param, (Home.jsx)
 
@@ -38,6 +39,7 @@ export default function PinDetail({ user }) {
   }, [pinId]);
 
   const handleAddComment = (e) => {
+    setAddingComment(true);
     client
       .patch(pinId)
       .setIfMissing({ comments: [] })
@@ -177,7 +179,7 @@ export default function PinDetail({ user }) {
               className='bg-red-600 p-2 px-4 rounded-full text-white text-xl font-semibold opacity-75 hover:opacity-100 hover:shadow-md outline-none'
               onClick={handleAddComment}
             >
-              Done
+              {addingComment ? 'Posting..' : 'Post!'}
             </button>
           </div>
         </div>
