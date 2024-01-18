@@ -38,9 +38,25 @@ export default function PinDetail({ user }) {
   }, [pinId]);
 
   const handleAddComment = (e) => {
-    console.log('handled');
-    setComment('');
-  }
+    client
+      .patch(pinId)
+      .setIfMissing({ comments: [] })
+      .insert('after', 'comments[-1]', [
+        {
+          comment,
+          _key: uuidv4(),
+          postedBy: {
+            _type: 'postedBy',
+            _ref: user._id,
+          },
+        },
+      ])
+      .commit()
+      .then(() => {
+        fetchPinDetails();
+        setComment('');
+      });
+  };
 
   if (loading) return <Spinner message='Hold tight..!' />;
 
@@ -160,7 +176,9 @@ export default function PinDetail({ user }) {
               type='button'
               className='bg-red-600 p-2 px-4 rounded-full text-white text-xl font-semibold opacity-75 hover:opacity-100 hover:shadow-md outline-none'
               onClick={handleAddComment}
-            >Done</button>
+            >
+              Done
+            </button>
           </div>
         </div>
       </div>
