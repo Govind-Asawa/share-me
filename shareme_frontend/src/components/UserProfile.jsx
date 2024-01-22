@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
+import { IoMdAdd } from 'react-icons/io';
 import { GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 
 import { client } from '../SanityClient';
@@ -16,6 +17,11 @@ import Spinner from './Spinner';
 const randomImage =
   'https://source.unsplash.com/1600x900/?nature,landscape,beauty';
 
+const activeBtnStyles =
+  'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
+const notActiveBtnStyles =
+  'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
+
 export default function UserProfile() {
   const [user, setUser] = useState(null);
   const [pins, setPins] = useState([]);
@@ -29,21 +35,16 @@ export default function UserProfile() {
     client.fetch(query).then((data) => setUser(data[0]));
   }, [userId]);
 
-  const loadCreatedPins = () => {
-    const query = userCreatedPinsQuery(userId);
+  useEffect(() => {
+    let query = '';
+    console.log(text);
+    if (text === 'Created') query = userCreatedPinsQuery(userId);
+    else query = userSavedPinsQuery(userId);
 
     client.fetch(query).then((data) => {
       if (data?.length > 0) setPins([...data]);
     });
-  };
-
-  const loadSavedPins = () => {
-    const query = userSavedPinsQuery(userId);
-
-    client.fetch(query).then((data) => {
-      if (data?.length > 0) setPins([...data]);
-    });
-  };
+  }, [text, userId]);
 
   const logout = () => {
     localStorage.clear();
@@ -81,12 +82,57 @@ export default function UserProfile() {
                   className='bg-white p-1 rounded-full opacity-75 hover:opacity-100 cursor-pointer outline-none'
                   onClick={logout}
                 >
-                  <AiOutlineLogout color='red' fontSize={21}/>
+                  <AiOutlineLogout color='red' fontSize={21} />
                 </button>
               </GoogleOAuthProvider>
             )}
           </div>
         </div>
+        {/* CREATED & SAVED Btns */}
+        <div className='text-center mb-7'>
+          <button
+            type='button'
+            onClick={(e) => {
+              setText('Created');
+              setActiveBtn('created');
+            }}
+            className={
+              activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles
+            }
+          >
+            Created
+          </button>
+          <button
+            type='button'
+            onClick={(e) => {
+              setText('Saved');
+              setActiveBtn('saved');
+            }}
+            className={
+              activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles
+            }
+          >
+            Saved
+          </button>
+        </div>
+        {pins?.length ? (
+          <div className='px-2'>
+            <MasonryLayout pins={pins} />
+          </div>
+        ) : (
+          <div className='flex flex-col gap-3 justify-center items-center w-full mt-2'>
+             <Link
+              to='/create-pin'
+              className='bg-black text-white flex items-center justify-center w-12 md:w-14 h-12 rounded-lg'
+            >
+              <IoMdAdd />
+            </Link>
+            <p className='font-bold text-xl'>
+              Go ahead and create your first pin!
+            </p>
+           
+          </div>
+        )}
       </div>
     </div>
   );

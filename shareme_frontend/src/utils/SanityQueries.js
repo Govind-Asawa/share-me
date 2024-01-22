@@ -123,7 +123,7 @@ export const morePinsLikeThisQuery = (pin) => {
 };
 
 export const userCreatedPinsQuery = (userId) => {
-  const query = `*[_type == 'pin' && userId == ${userId}] | order(_createdAt desc){
+  const query = `*[_type == 'pin' && userId == '${userId}'] | order(_createdAt desc){
 		image {
 			asset -> {
 				url
