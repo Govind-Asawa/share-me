@@ -28,7 +28,30 @@ export default function Feed() {
     }
   }, [categoryId]);
 
-  if (loading) return <Spinner message='Hold tight..!' />;
+  if (loading)
+    return (
+        <Spinner message='Hold tight..!' />
+    );
 
-  return <div>{pins && <MasonryLayout pins={pins} />}</div>;
+  if (pins?.length === 0) {
+    return (
+      <div className='justify-center text-center'>
+        <h1 className='text-center text-3xl text-red-500'>
+          Category : <span className='text-black capitalize'> {categoryId}</span>
+        </h1>
+        <p className='m-5 text-center text-2xl'>No pins found</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className='justify-center text-center'>
+        {categoryId && (
+          <h1 className='text-center text-3xl text-red-500'>
+            Category : <span className='text-black capitalize'> {categoryId}</span>
+          </h1>
+        )}
+        {pins && <MasonryLayout pins={pins} />}
+      </div>
+    );
+  }
 }

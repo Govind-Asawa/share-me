@@ -39,10 +39,10 @@ export default function Sidebar({ user, setToggleSidebar }) {
           <h3 className='mt-2 mx-5 text-base 2xl:text-xl'>
             Discover Categories
           </h3>
-          {categories.slice(0, -1).map((item) => {
+          {categories.map((item) => {
             return (
             <NavLink
-              to={`/categories/${item.name}`}
+              to={`/category/${item.name}`}
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
             }
