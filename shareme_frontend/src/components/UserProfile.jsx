@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { googleLogout } from '@react-oauth/google';
+import { IoIosLogOut } from 'react-icons/io';
+import { GoogleOAuthProvider, googleLogout } from '@react-oauth/google';
 
 import { client } from '../SanityClient';
 import {
@@ -21,6 +22,7 @@ export default function UserProfile() {
   const [text, setText] = useState('Created');
   const [activeBtn, setActiveBtn] = useState('created');
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const query = getUserQuery(userId);
@@ -43,6 +45,12 @@ export default function UserProfile() {
     });
   };
 
+  const logout = () => {
+    localStorage.clear();
+    googleLogout();
+    navigate('/login');
+  };
+
   if (!user) return <Spinner message='Fetching your content..' />;
   return (
     <div className='relative pb-2 h-full justify-center items-center'>
@@ -54,9 +62,30 @@ export default function UserProfile() {
               alt='random-cover'
               className='w-full h-370 2xl:h-510 shadow-lg object-cover'
             />
-            <img src={user?.image} alt="user-photo" className='rounded-full w-20 h-20 -mt-10 shadow-xml object-cover'/>
+            <img
+              src={user?.image}
+              alt='user-photo'
+              className='rounded-full w-20 h-20 -mt-10 shadow-xml object-cover'
+            />
           </div>
-          <h1 className='font-bold text-3xl text-center mt-3'>{user?.userName}</h1>
+          <h1 className='font-bold text-3xl text-center mt-3'>
+            {user?.userName}
+          </h1>
+          <div className='absolute top-0 z-1 right-0 p-2'>
+            {userId === user._id && (
+              <GoogleOAuthProvider
+                clientId={process.env.REACT_APP_GOOGLE_TOKEN}
+              >
+                <button
+                  type='button'
+                  className='bg-white p-1 rounded-full opacity-75 hover:opacity-100 cursor-pointer outline-none'
+                  onClick={logout}
+                >
+                  <AiOutlineLogout color='red' fontSize={21}/>
+                </button>
+              </GoogleOAuthProvider>
+            )}
+          </div>
         </div>
       </div>
     </div>
