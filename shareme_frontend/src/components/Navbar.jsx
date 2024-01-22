@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMdAdd, IoMdSearch } from 'react-icons/io';
 
-export default function Navbar({ user }) {
-  const [searchTerm, setSearchTerm] = useState('');
+export default function Navbar({ user, searchTerm, setSearchTerm }) {
   const navigate = useNavigate();
   if(!user)
     return ;
