@@ -62,7 +62,7 @@ export default function Sidebar({ user, setToggleSidebar }) {
           onClick={handleLogoClick}
         >
           <img src={user.image} alt="user-profile" className='w-10 h-10 rounded-full'/>
-          <p>{user.userName} &gt; </p>
+          <p>{user.userName}</p>
         </Link>
       )}
     </div>

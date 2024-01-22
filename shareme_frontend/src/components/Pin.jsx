@@ -16,7 +16,7 @@ export default function Pin({ pin }) {
   const userInfo = fetchUser();
 
   const alreadySaved = !!save?.filter(
-    (saveItem) => saveItem.postedBy._id == userInfo.sub
+    (saveItem) => saveItem.postedBy._id == userInfo?.sub
   )?.length;
 
   const savePin = (pinId) => {
@@ -28,10 +28,10 @@ export default function Pin({ pin }) {
       .insert('after', 'save[-1]', [
         {
           _key: uuidv4(), //unique key
-          userId: userInfo.sub,
+          userId: userInfo?.sub,
           postedBy: {
             _type: 'postedBy',
-            _ref: userInfo.sub,
+            _ref: userInfo?.sub,
           },
         },
       ])
@@ -115,7 +115,7 @@ export default function Pin({ pin }) {
                 </a>
               )}
               {/* Conditional DELETE button if current user posted this pin*/}
-              {postedBy?._id === userInfo.sub && (
+              {postedBy?._id === userInfo?.sub && (
                 <button
                   type='button'
                   className='bg-white p-2 opacity-70 hover:opacity-100 font-bold text-dark text-base rounded-3xl hover:shadow-md'

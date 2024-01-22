@@ -20,14 +20,12 @@ export default function Home() {
 
   useEffect(() => {
     if (userInfo)
-      client.fetch(getUserQuery(userInfo.sub)).then((data) => setUser(data[0]));
+      client.fetch(getUserQuery(userInfo?.sub)).then((data) => setUser(data[0]));
   }, []);
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);
   });
-
-  if (!user) navigate(('/login'));
 
   return (
     <div className='flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out'>

@@ -37,7 +37,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     let query = '';
-    console.log(text);
+    
     if (text === 'Created') query = userCreatedPinsQuery(userId);
     else query = userSavedPinsQuery(userId);
 
